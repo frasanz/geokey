@@ -1,18 +1,17 @@
-dist: trusty
+dist: bionic
 language: python
 
 services:
   - postgresql
 
 python:
-  - '2.7_with_system_site_packages'
-  - '3.6'
+  - '2.7'
 
 addons:
-  postgresql: '9.4'
+  postgresql: '9.6'
   apt:
     packages:
-      - postgresql-9.4-postgis-2.3
+      - postgresql-9.6-postgis-2.4
 
 env:
   - DJANGO='>=1.8.19,<1.12'
@@ -20,7 +19,7 @@ env:
 install:
   - sudo -E apt-get -yq update &>> ~/apt-get-update.log
   - sudo apt-get install binutils libav-tools
-  - sudo apt-get -yq install libgdal-dev
+  - sudo apt-get -yq install libgdal-dev python-gdal
   - gdal-config --version
   - export C_INCLUDE_PATH=/usr/include/gdal
   - export CPLUS_INCLUDE_PATH=/usr/include/gdal
@@ -32,6 +31,8 @@ before_script:
   - psql -c "CREATE DATABASE geokey OWNER django;" -U postgres
   - psql -d geokey -c "CREATE EXTENSION postgis;" -U postgres
   - cp -r local_settings.example local_settings
+  - pip install rsa==4.5
+  - pip install "regex<2022.1.18"
   - pip install --upgrade pip
   - pip install coveralls
   - pip install -r requirements-dev.txt
