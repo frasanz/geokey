@@ -94,7 +94,7 @@ class FileSerializerTest(TestCase):
 
         serializer = FileSerializer(video, context={'user': video.creator})
 
-        self.assertNotEqual(
+        self.assertEqual(
             serializer.get_thumbnail_url(video),
             '/static/img/play.png'
         )
